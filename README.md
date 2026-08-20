@@ -2,7 +2,7 @@
 
 ![URL Shortener dashboard built with Spring Boot and React](./dashboard.png)
 
-A full stack URL shortener application built with **Spring Boot 3**, **React**, **TypeScript**, **Vite**, **Tailwind CSS**, **Spring Data JPA**, and **H2 Database**. This project demonstrates how to build a modern Bitly-style short link platform with custom aliases, QR codes, click analytics, URL management, expiration dates, and a responsive dashboard.
+A full stack URL shortener application built with **Spring Boot 3**, **React**, **TypeScript**, **Vite**, **Tailwind CSS**, **Spring Data JPA**, and **PostgreSQL**. This project demonstrates how to build a modern Bitly-style short link platform with custom aliases, QR codes, click analytics, URL management, expiration dates, and a responsive dashboard.
 
 This repository is useful for developers searching for a **Spring Boot URL shortener project**, **React URL shortener app**, **full stack Java project**, **URL shortener with analytics**, or **Java React portfolio project**.
 
@@ -19,7 +19,7 @@ This repository is useful for developers searching for a **Spring Boot URL short
 
 ## Demo Short Links
 
-The backend includes seed data for local testing. These demo links are loaded from `backend/src/main/resources/data.sql` into the local file-based H2 database. User-created short links persist across backend restarts.
+The backend includes seed data for local testing. These demo links are loaded from `backend/src/main/resources/data.sql` into the PostgreSQL database. User-created short links persist across backend restarts.
 
 | Short Link | Redirects To |
 |-----------|--------------|
@@ -44,7 +44,7 @@ The backend includes seed data for local testing. These demo links are loaded fr
 | Java 17+ | Backend runtime target |
 | Spring Web | REST API and redirects |
 | Spring Data JPA | Database persistence |
-| H2 Database | Local development database |
+| PostgreSQL 18 | Relational database |
 | Bean Validation | Request validation |
 | Lombok | Boilerplate reduction |
 | ZXing | QR code generation |
@@ -94,7 +94,7 @@ The backend includes seed data for local testing. These demo links are loaded fr
 - Favicon-safe endpoint: `GET /favicon.ico`
 - Proper `404` handling for missing static resources
 - `spring.jpa.open-in-view=false` for cleaner persistence boundaries
-- H2 dialect warning removed by letting Hibernate auto-detect the dialect
+- PostgreSQL database configuration with JPA/Hibernate persistence
 
 ## Project Structure
 
@@ -145,8 +145,8 @@ url-shortener-springboot/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/imrajeevnayan/url-shortener-springboot.git
-cd url-shortener-springboot
+git clone https://github.com/chavala-poornasai/url_shortner.git
+cd url_shortner
 ```
 
 ### 2. Start the Backend
@@ -167,7 +167,6 @@ The backend runs at:
 
 - API status: `http://localhost:8080/`
 - REST API: `http://localhost:8080/api`
-- H2 console: `http://localhost:8080/h2-console`
 
 ### 3. Start the Frontend
 
@@ -235,9 +234,10 @@ Edit `backend/src/main/resources/application.properties`:
 
 ```properties
 server.port=8080
-spring.datasource.url=jdbc:h2:file:./data/urlshortenerdb
-spring.datasource.username=sa
-spring.datasource.password=
+spring.datasource.url=jdbc:postgresql://localhost:5432/url_shortener
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.datasource.username=${DB_USERNAME:postgres}
+spring.datasource.password=${DB_PASSWORD}
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.open-in-view=false
 spring.sql.init.mode=always
@@ -261,28 +261,17 @@ VITE_API_URL=http://localhost:8080/api npm run dev
 
 If no environment variable is set, the app falls back to `/api` or the value stored in browser local storage.
 
-## H2 Database Console
+## PostgreSQL Database
 
-Open:
+The application uses PostgreSQL 18 as its primary relational database.
 
-```text
-http://localhost:8080/h2-console
-```
-
-Default profile credentials:
+### Local Development Configuration
 
 ```text
-JDBC URL: jdbc:h2:file:./data/urlshortenerdb
-Username: sa
-Password:
-```
-
-Development profile credentials:
-
-```text
-JDBC URL: jdbc:h2:file:./data/urlshortener-dev
-Username: sa
-Password:
+Database: url_shortener
+Host: localhost
+Port: 5432
+Username: postgres
 ```
 
 ## Build and Verify
@@ -305,7 +294,7 @@ npm run build
 
 ## SEO Keywords
 
-Spring Boot URL shortener, React URL shortener, Java URL shortener project, full stack URL shortener, URL shortener with analytics, custom short links, QR code URL shortener, Spring Boot React project, TypeScript URL shortener, H2 database Spring Boot project.
+Spring Boot URL shortener, React URL shortener, Java URL shortener project, full stack URL shortener, URL shortener with analytics, custom short links, QR code URL shortener, Spring Boot React project, TypeScript URL shortener, PostgreSQL Spring Boot project.
 
 ## Deployment
 
@@ -319,11 +308,11 @@ The Spring Boot backend can be deployed as:
 - Google Cloud Run
 - Render, Railway, Fly.io, or similar platforms
 
-For production, replace H2 with PostgreSQL or MySQL, configure a public `app.url-shortener.base-url`, disable demo seed data, and use environment variables for secrets.
+For production, use PostgreSQL with environment-based database credentials, configure a public `app.url-shortener.base-url`, disable demo seed data, and use environment variables for secrets.
 
 ## Repository
 
-GitHub: [imrajeevnayan/url-shortener-springboot](https://github.com/imrajeevnayan/url-shortener-springboot)
+GitHub: https://github.com/chavala-poornasai/url_shortner
 
 ## License
 
